@@ -1,0 +1,295 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 Week-6\par
+Task-1:\par
+\par
+import java.util.*;\par
+public class Solution\par
+ \{\par
+  public static long stringSimilarity(String s) \{\par
+        int n = s.length();\par
+        int[] z = new int[n];\par
+        int left = 0, right = 0;\par
+        for (int i = 1; i < n; i++) \{\par
+            if (i <= right) \{\par
+                z[i] = Math.min(right - i + 1, z[i - left]);\par
+            \}\par
+            while (i + z[i] < n && s.charAt(z[i]) == s.charAt(i + z[i])) \{\par
+                z[i]++;\par
+            \}\par
+            if (i + z[i] - 1 > right) \{\par
+                left = i;\par
+                right = i + z[i] - 1;\par
+            \}\par
+        \}\par
+        long sum = n; // include full string match\par
+        for (int i = 0; i < n; i++) \{\par
+            sum += z[i];\par
+        \}\par
+        return sum;\par
+    \}\par
+    public static void main(String[] args) \{\par
+        Scanner sc = new Scanner(System.in);\par
+        int t = sc.nextInt();\par
+        sc.nextLine(); // consume newline\par
+        while (t-- > 0) \{\par
+            String s = sc.nextLine();\par
+            System.out.println(stringSimilarity(s));\par
+        \}\par
+        sc.close();\par
+    \}\par
+\}\par
+\par
+\par
+Task-2:\par
+\par
+public class Solution \{\par
+    public boolean repeatedSubstringPattern(String s) \{\par
+        int n = s.length();\par
+        for (int i = 1; i <= n / 2; i++) \{\par
+            if (n % i == 0) \{\par
+                String substring = s.substring(0, i);\par
+                StringBuilder repeated = new StringBuilder();\par
+                for (int j = 0; j < n / i; j++) \{\par
+                    repeated.append(substring);\par
+                \}\par
+                if (repeated.toString().equals(s)) return true;\par
+            \}\par
+        \}\par
+        return false;\par
+    \}\par
+\}\par
+\par
+Task-3:\par
+\par
+import java.util.*;\par
+public class Solution \{\par
+    public static String twoStrings(String s1, String s2) \{\par
+        HashSet<Character> set = new HashSet<Character>();\par
+        // Store characters of s1\par
+        for (int i = 0; i < s1.length(); i++) \{\par
+            set.add(s1.charAt(i));\par
+        \}\par
+        // Check if any character of s2 exists in s1\par
+        for (int i = 0; i < s2.length(); i++) \{\par
+            if (set.contains(s2.charAt(i))) \{\par
+                return "YES";\par
+            \}\par
+        \}\par
+        return "NO";\par
+    \}\par
+    public static void main(String[] args) \{\par
+        Scanner sc = new Scanner(System.in);\par
+        int t = sc.nextInt();\par
+        sc.nextLine();\par
+        while (t-- > 0) \{\par
+            String s1 = sc.nextLine();\par
+            String s2 = sc.nextLine();\par
+            System.out.println(twoStrings(s1, s2));\par
+        \}\par
+        sc.close();\par
+    \}\par
+\}\par
+\par
+\par
+Task-4:\par
+\par
+class Solution \{\par
+    public boolean rotateString(String s, String goal) \{\par
+        return s.length() == goal.length() && (s + s).contains(goal);\par
+    \}\par
+\}\par
+\par
+\par
+Task-5:\par
+\par
+import java.util.*;\par
+public class Solution \{\par
+    public static int marsExploration(String s) \{\par
+        int count = 0;\par
+        for (int i = 0; i < s.length(); i++) \{\par
+            if (i % 3 == 0 || i % 3 == 2) \{\par
+                if (s.charAt(i) != 'S') \{\par
+                    count++;\par
+                \}\par
+            \} else \{ // i % 3 == 1\par
+                if (s.charAt(i) != 'O') \{\par
+                    count++;\par
+                \}\par
+            \}\par
+        \}\par
+        return count;\par
+    \}\par
+    public static void main(String[] args) \{\par
+        Scanner sc = new Scanner(System.in);\par
+        String s = sc.nextLine();\par
+        System.out.println(marsExploration(s));\par
+        sc.close();\par
+    \}\par
+\}\par
+\par
+Task-6:\par
+\par
+class Solution \{\par
+    public List<Integer> findAnagrams(String s, String p) \{\par
+        List<Integer> res = new ArrayList<>();\par
+        if (s.length() < p.length())\par
+            return res;\par
+        int[] sCount = new int[26];\par
+        int[] pCount = new int[26];\par
+        for (int i = 0; i < p.length(); i++) \{\par
+            sCount[s.charAt(i) - 'a']++;\par
+            pCount[p.charAt(i) - 'a']++;\par
+        \}\par
+        if (Arrays.equals(pCount, sCount))\par
+            res.add(0);\par
+        for (int i = p.length(); i < s.length(); i++) \{\par
+            sCount[s.charAt(i) - 'a']++;\par
+            // remove character freqeuency which is at i-p.length index bczz its not needed anymore in current window\par
+            sCount[s.charAt(i - p.length()) - 'a']--;\par
+            if (Arrays.equals(pCount, sCount))\par
+                res.add(i - p.length() + 1);\par
+        \}\par
+        return res;\par
+    \}\par
+\}\par
+\par
+\par
+Task-7:\par
+\par
+import java.util.*;\par
+public class Solution \{\par
+    // Helper function to check palindrome\par
+    static boolean isPalindrome(String s, int left, int right) \{\par
+        while (left < right) \{\par
+            if (s.charAt(left) != s.charAt(right)) \{\par
+                return false;\par
+            \}\par
+            left++;\par
+            right--;\par
+        \}\par
+        return true;\par
+    \}\par
+    // Main function\par
+    static int palindromeIndex(String s) \{\par
+        int left = 0;\par
+        int right = s.length() - 1;\par
+        while (left < right) \{\par
+            if (s.charAt(left) != s.charAt(right)) \{\par
+                // Check by removing left character\par
+                if (isPalindrome(s, left + 1, right)) \{\par
+                    return left;\par
+                \}\par
+                // Check by removing right character\par
+                else if (isPalindrome(s, left, right - 1)) \{\par
+                    return right;\par
+                \}\par
+                else \{\par
+                    return -1;\par
+                \}\par
+            \}\par
+            left++;\par
+            right--;\par
+        \}\par
+        return -1; // already palindrome\par
+    \}\par
+    public static void main(String[] args) \{\par
+        Scanner sc = new Scanner(System.in);\par
+        int q = sc.nextInt(); // number of test cases\par
+        sc.nextLine(); // consume newline\par
+        while (q-- > 0) \{\par
+            String s = sc.nextLine();\par
+            System.out.println(palindromeIndex(s));\par
+        \}\par
+    \}\par
+\}\par
+\par
+\par
+Task-8:\par
+\par
+class Solution \{\par
+    public int strStr(String haystack, String needle) \{\par
+        int haylength=haystack.length();\par
+        int needlelength=needle.length();\par
+        if(haylength<needlelength)\par
+            return -1;\par
+        for(int i=0;i<=haystack.length()-needle.length();i++)\{\par
+            int j=0;\par
+            while(j<needle.length() && haystack.charAt(i+j)==needle.charAt(j))\par
+                j++;\par
+            if(j==needle.length())\{\par
+                return i;\par
+            \}\par
+        \}\par
+        return -1;\par
+    \}\par
+\}\par
+\par
+\par
+Task-9:\par
+\par
+public class Solution \{\par
+private int lo, maxLen;\par
+public String longestPalindrome(String s) \{\par
+\tab int len = s.length();\par
+\tab if (len < 2)\par
+\tab\tab return s;\tab\par
+    for (int i = 0; i < len-1; i++) \{\par
+     \tab extendPalindrome(s, i, i);  //assume odd length, try to extend Palindrome as possible\par
+     \tab extendPalindrome(s, i, i+1); //assume even length.\par
+    \}\par
+    return s.substring(lo, lo + maxLen);\par
+\}\par
+private void extendPalindrome(String s, int j, int k) \{\par
+\tab while (j >= 0 && k < s.length() && s.charAt(j) == s.charAt(k)) \{\par
+\tab\tab j--;\par
+\tab\tab k++;\par
+\tab\}\par
+\tab if (maxLen < k - j - 1) \{\par
+\tab\tab lo = j + 1;\par
+\tab\tab maxLen = k - j - 1;\par
+\tab\}\par
+\}\}\par
+\par
+Task-10:\par
+\par
+import java.util.*;\par
+public class Solution \{\par
+    // Function to find longest palindrome in substring [start, start+n-1]\par
+    static int longestPalindrome(String s, int start, int n) \{\par
+        int maxLen = 1;\par
+        for (int center = start; center < start + n; center++) \{\par
+            // Odd length palindrome\par
+            int left = center, right = center;\par
+            while (left >= start && right < start + n &&\par
+                    s.charAt(left) == s.charAt(right)) \{\par
+                maxLen = Math.max(maxLen, right - left + 1);\par
+                left--;\par
+                right++;\par
+            \}\par
+            // Even length palindrome\par
+            left = center;\par
+            right = center + 1;\par
+            while (left >= start && right < start + n &&\par
+                    s.charAt(left) == s.charAt(right)) \{\par
+                maxLen = Math.max(maxLen, right - left + 1);\par
+                left--;\par
+                right++;\par
+            \}\par
+        \}\par
+        return maxLen;\par
+    \}\par
+    public static void main(String[] args) \{\par
+        Scanner sc = new Scanner(System.in);\par
+        int n = sc.nextInt();\par
+        String s = sc.next();\par
+        String t = s + s; // double string\par
+        for (int i = 0; i < n; i++) \{\par
+            System.out.println(longestPalindrome(t, i, n));\par
+        \}\par
+    \}\par
+\}\par
+\par
+\par
+}
+ 
